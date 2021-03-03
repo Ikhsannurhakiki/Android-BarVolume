@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnCalculate;
     private TextView tvResult;
 
+    private static final String STATE_RESULT = "state_result";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +32,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btnCalculate.setOnClickListener(this);
 
+        if(savedInstanceState != null){
+            String result = savedInstanceState.getString(STATE_RESULT);
+            tvResult.setText(result);
+        }
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(STATE_RESULT, tvResult.getText().toString());
     }
 
     @Override
