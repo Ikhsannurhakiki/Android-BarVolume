@@ -9,32 +9,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.barvolume.databinding.ActivityMainBinding;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText edtWidth;
-    private EditText edtHeight;
-    private EditText edtLength;
-    private Button btnCalculate;
-    private TextView tvResult;
-
     private static final String STATE_RESULT = "state_result";
+
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        edtWidth = findViewById(R.id.edt_width);
-        edtHeight = findViewById(R.id.edt_height);
-        edtLength = findViewById(R.id.edt_length);
-        btnCalculate = findViewById(R.id.btn_calculate);
-        tvResult = findViewById(R.id.tv_result);
-
-        btnCalculate.setOnClickListener(this);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        binding.btnCalculate.setOnClickListener(this);
 
         if(savedInstanceState != null){
             String result = savedInstanceState.getString(STATE_RESULT);
-            tvResult.setText(result);
+            binding.tvResult.setText(result);
         }
 
     }
@@ -42,35 +36,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(STATE_RESULT, tvResult.getText().toString());
+        outState.putString(STATE_RESULT, binding.tvResult.getText().toString());
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_calculate) {
-            String inputLength = edtLength.getText().toString().trim();
-            String inputWidth = edtWidth.getText().toString().trim();
-            String inputHeight = edtHeight.getText().toString().trim();
+            String inputLength = binding.edtLength.getText().toString().trim();
+            String inputWidth = binding.edtWidth.getText().toString().trim();
+            String inputHeight = binding.edtHeight.getText().toString().trim();
 
 
             boolean isEmptyFields = false;
 
             if (TextUtils.isEmpty(inputLength)) {
                 isEmptyFields = true;
-                edtLength.setError("Field ini tidak boleh kosong");
+                binding.edtLength.setError("Field ini tidak boleh kosong");
             }
             if (TextUtils.isEmpty(inputWidth)) {
                 isEmptyFields = true;
-                edtWidth.setError("Field ini tidak boleh kosong");
+                binding.edtWidth.setError("Field ini tidak boleh kosong");
             }
             if (TextUtils.isEmpty(inputHeight)) {
                 isEmptyFields = true;
-                edtHeight.setError("Field ini tidak boleh kosong");
+                binding.edtHeight.setError("Field ini tidak boleh kosong");
             }
 
             if (!isEmptyFields) {
                 Double volume = Double.valueOf(inputLength) * Double.valueOf(inputHeight) * Double.valueOf(inputWidth);
-                tvResult.setText(String.valueOf(volume));
+                binding.tvResult.setText(String.valueOf(volume));
             }
 
         }
